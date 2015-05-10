@@ -56,6 +56,7 @@ class AppointmentTypeViewController: UIViewController, UITableViewDataSource, UI
             
         case 0 where indexPath.row == 3:
         let textViewCell = tableView.dequeueReusableCellWithIdentifier("TextViewCell") as! TextViewCell
+        textViewCell.textView.delegate = self
         return textViewCell
     
         default:
@@ -72,7 +73,6 @@ class AppointmentTypeViewController: UIViewController, UITableViewDataSource, UI
                 return 112
             }
              return indexPath.row != 1 ? 80 : 120
-            //return 40
         } else {
             return 70
         }
@@ -85,6 +85,25 @@ class AppointmentTypeViewController: UIViewController, UITableViewDataSource, UI
     func typeSelected() {
         isAppointmentTypeSelected = true
         tableView.reloadData()
+    }
+    
+    func textViewShouldBeginEditing(textView: UITextView) -> Bool {
+        tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0), atScrollPosition: .Middle, animated: true)
+        return true
+    }
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50
+    }
+    
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView(frame: CGRectMake(0, 0, self.view.frame.width, 50))
+        headerView.backgroundColor = UIColor.whiteColor()
+        let headingLabel = UILabel(frame: CGRectMake(20, 20, self.view.frame.width, 30))
+        headingLabel.textColor = UIColor.blueColor()
+        headingLabel.text = section == 0 ? "Appointment type" : "Preference Date/Time"
+        headerView.addSubview(headingLabel)
+        return headerView
     }
     
 }
